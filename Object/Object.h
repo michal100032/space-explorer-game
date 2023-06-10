@@ -3,9 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
+#include "../Math/Vector2f.h"
+
 class Object {
 protected:
-	sf::Vector2f m_position;
+	Vector2f m_position;
 	float m_rotation;
 
 	std::string m_name;
@@ -15,9 +17,9 @@ protected:
 	Object(const std::string& name);
 public:
 
-	virtual void update() = 0;
+	virtual void update() {}
 
-	virtual sf::Vector2f getPosition();
+	virtual Vector2f getPosition();
 	virtual void setPosition(float x, float y);
 	virtual void move(float x, float y);
 
@@ -25,7 +27,10 @@ public:
 	virtual void setRotation(float rotation);
 	virtual void rotate(float angle);
 
-	virtual sf::Shape* getShape() = 0;
+	virtual Vector2f getVelocity() {
+		return { 0.0f, 0.0f };
+	}
+	virtual sf::Shape* getShape() { return nullptr; }
 
 	virtual const std::string& getName();
 	virtual void setName(const std::string& name);

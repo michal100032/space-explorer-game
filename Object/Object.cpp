@@ -6,7 +6,7 @@ Object::Object(const std::string& name) : m_name(name), m_rotation(0.0f) {
 
 }
 
-sf::Vector2f Object::getPosition() {
+Vector2f Object::getPosition() {
 	return m_position;
 }
 

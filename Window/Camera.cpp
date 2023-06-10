@@ -24,6 +24,7 @@ void Camera::render() {
     Window::inst().m_window->clear();
     for (Object* object : Window::inst().m_objects) {
         sf::Shape* shape = object->getShape();
+        shape->setRotation(object->getRotation());
         if(!object->preserveScreenSize())
             shape->setScale(m_pixelsPerUnit, m_pixelsPerUnit);
         shape->setPosition(

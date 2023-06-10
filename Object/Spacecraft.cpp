@@ -13,6 +13,9 @@ Spacecraft::Spacecraft(const std::string& name, sf::Color color) :
 	m_preserveScreenSize = true;
 
 	m_position = { 30.0f, 30.0f };
+
+	m_orbit.update(m_position, m_velocity);
+	m_orbitRenderer = Window::createObject<OrbitRenderer>(&m_orbit);
 }
 
 void Spacecraft::update() {
@@ -21,4 +24,8 @@ void Spacecraft::update() {
 
 sf::Shape* Spacecraft::getShape() {
 	return (sf::Shape*)&m_shape;
+}
+
+Vector2f Spacecraft::getVelocity() {
+	return m_velocity;
 }

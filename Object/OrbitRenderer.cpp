@@ -2,21 +2,27 @@
 
 #include "../Shapes/EllipseShape.h"
 
-OrbitRenderer::OrbitRenderer(Orbit* orbit) 
+#include <iostream>
+
+OrbitRenderer::OrbitRenderer()
 	: Object("Orbit renderer"),
-	m_orbit(orbit),
 	m_color(40, 40, 40, 255) {}
 
 void OrbitRenderer::refresh() {
-	m_shape = new EllipseShape(
-		m_orbit->semiMajorAxis(),
-		m_orbit->semiMinorAxis(),
-		m_orbit->tilt()
-	);
+	
+	m_shape = new EllipseShape(m_orbit);
 
 	m_shape->setFillColor(sf::Color::Transparent);
 	m_shape->setOutlineColor(m_color);
-	m_shape->setOutlineThickness(3.0f);
+	m_shape->setOutlineThickness(0.5f);
+
+	((EllipseShape*)m_shape)->setOriginToFocus();
+	
+}
+
+void OrbitRenderer::setOrbit(Orbit* orbit) {
+	m_orbit = orbit;
+	refresh();
 }
 
 sf::Shape* OrbitRenderer::getShape() {

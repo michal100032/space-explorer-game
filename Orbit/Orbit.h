@@ -28,6 +28,7 @@ public:
 	float periapsis();
 	float apoapsis();
 
+	Vector3f eccVec();
 	float eccentricity();
 	float semiMajorAxis();
 	float semiMinorAxis();

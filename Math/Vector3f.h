@@ -32,7 +32,7 @@ public:
 	
 	operator sf::Vector3f();
 	sf::Vector3f sf();
-
+	sf::Vector2f sf2();
 
 	static float dot(const Vector3f& lhs, const Vector3f& rhs);
 	static Vector3f cross(const Vector3f& lhs, const Vector3f rhs);

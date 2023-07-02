@@ -6,6 +6,10 @@ Object::Object(const std::string& name) : m_name(name), m_rotation(0.0f) {
 
 }
 
+const std::string& Object::name() const {
+	return m_name;
+}
+
 Vector2f Object::getPosition() {
 	return m_position;
 }
@@ -28,10 +32,6 @@ void Object::setRotation(float rotation) {
 
 void Object::rotate(float angle) {
 	m_rotation += angle;
-}
-
-const std::string& Object::getName() {
-	return m_name;
 }
 
 void Object::setName(const std::string& name) {

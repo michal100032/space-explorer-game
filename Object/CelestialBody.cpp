@@ -9,7 +9,10 @@ CelestialBody* CelestialBody::root = nullptr;
 
 CelestialBody::CelestialBody(const std::string& name, float mass, float radius, sf::Color color) :
 	Object(name), m_mass(mass), m_radius(radius), m_shape(radius), m_gp(consts::G * mass) {
-	m_shape.setFillColor(color);
+	
+    std::cout << name << " - GP: " << m_gp << std::endl;
+
+    m_shape.setFillColor(color);
     m_shape.setOrigin(m_shape.getLocalBounds().width / 2, m_shape.getLocalBounds().height / 2);
 }
 
@@ -57,6 +60,7 @@ sf::Shape* CelestialBody::getShape() {
 }
 
 CelestialBody* CelestialBody::whoseSoi(Vector2f pos) {
+    std::cout << (root == nullptr ? "NO ROOT" : root->name()) << std::endl;
     CelestialBody* curr = root;
     while (true) {
         for (CelestialBody* child : curr->m_children) {

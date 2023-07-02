@@ -71,6 +71,10 @@ sf::Vector3f Vector3f::sf() {
 	return { x, y, z };
 }
 
+sf::Vector2f Vector3f::sf2() {
+	return { x, y };
+}
+
 
 float Vector3f::dot(const Vector3f& lhs, const Vector3f& rhs) {
 	return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;

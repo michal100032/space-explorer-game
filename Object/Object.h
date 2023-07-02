@@ -16,7 +16,7 @@ protected:
 protected:
 	Object(const std::string& name);
 public:
-
+	const std::string& name() const;
 	virtual void update() {}
 
 	virtual Vector2f getPosition();
@@ -32,7 +32,6 @@ public:
 	}
 	virtual sf::Shape* getShape() { return nullptr; }
 
-	virtual const std::string& getName();
 	virtual void setName(const std::string& name);
 
 	bool preserveScreenSize();

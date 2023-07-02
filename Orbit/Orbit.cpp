@@ -1,22 +1,26 @@
 #include "Orbit.h"
 
+#include <iostream>
+
 Orbit::Orbit()
 	: m_body(nullptr), m_ecc(), m_sma(0.0f), m_tilt(0.0f) {}
 
 Orbit::Orbit(Vector2f position, Vector2f velocity) {
-	m_body = CelestialBody::whoseSoi(position);
-	
-	Vector3f SAM = Vector3f::cross(position, velocity);
-	m_ecc = Vector3f::cross((Vector3f)position, SAM) / m_body->gp() - position.normalized();
-	m_tilt = atan2f(m_ecc.y, m_ecc.x);
+	update(position, velocity);
 }
 
 void Orbit::update(Vector2f position, Vector2f velocity) {
 	m_body = CelestialBody::whoseSoi(position);
 
 	Vector3f SAM = Vector3f::cross(position, velocity);
-	m_ecc = Vector3f::cross((Vector3f)position, SAM) / m_body->gp() - position.normalized();
+	m_ecc = Vector3f::cross((Vector3f)velocity, SAM) / m_body->gp() - position.normalized();
 	m_tilt = atan2f(m_ecc.y, m_ecc.x);
+
+	m_sma = 1.0f / (2.0f / position.magnitude() - velocity.sqrMagnitude() / m_body->gp());
+}
+
+Vector3f Orbit::eccVec() {
+	return m_ecc;
 }
 
 float Orbit::eccentricity() {

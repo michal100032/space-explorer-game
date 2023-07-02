@@ -1,9 +1,12 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "Camera.h"
+
 #include "../Object/Object.h"
+#include "Text/Text.h"
 
 class Window {
 private:
@@ -15,11 +18,15 @@ private:
 	sf::RenderWindow* m_window = nullptr;
 
 	Window();
+	void loadFont(const std::string& name, const std::string& filename);
 
 	static Window& inst();
 
 	std::vector<Object*> m_objects;
+	std::vector<Text*> m_texts;
 
+	std::vector<sf::Font> m_fonts;
+	std::unordered_map<std::string, sf::Font*> m_fontsMap;
 public:
 	static void init(const std::string& title, int width, int height);
 	static bool isOpen();
@@ -38,9 +45,11 @@ public:
 		return object;
 	}
 
+	static Text* createText(const std::string& text, int x, int y, const std::string& fontFamily, int fontSize);
+
 	static Camera& camera();
 	static int width();
 	static int height();
-
+	
 	friend class Camera;
 };

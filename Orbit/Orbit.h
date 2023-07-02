@@ -15,8 +15,7 @@ private:
 	// the tilt
 	float m_tilt = 0.0f;
 	
-	// true anomaly
-	float m_ta = 0.0f;
+	float m_ta = 0.0f, m_ea = 0.0f, m_ma = 0.0f;
 
 	// the body the spacecraft is orbiting
 	CelestialBody* m_body = nullptr;

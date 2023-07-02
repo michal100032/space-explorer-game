@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "Time.h"
-#include "Text/Fonts.h"
 
 Window::Window() {
 	
@@ -14,8 +13,7 @@ void Window::loadFont(const std::string& name, const std::string& filename) {
 	if (!font.loadFromFile(filename)) {
 		std::cout << "Error: font " << name << " could not be loaded" << std::endl;
 	} else {
-		m_fonts.push_back(font);
-		m_fontsMap.insert({ name, &m_fonts[m_fonts.size() - 1] });
+		m_fonts.insert({ name, font });
 	}
 }
 
@@ -33,9 +31,10 @@ void Window::init(const std::string& title, int width, int height) {
 
 	inst().m_camera = new Camera();
 
+
 	inst().m_fonts.reserve(8);
-	
 	inst().loadFont("Consolas", "res/fonts/consola.ttf");
+
 }
 
 bool Window::isOpen() {
@@ -69,10 +68,19 @@ void Window::updateObjects() {
 
 void Window::display() {
 	inst().m_camera->render();
+	
+	for (sf::Text* text : inst().m_texts) {
+		inst().m_window->draw(*text);
+	}
+	Window::inst().m_window->display();
 }
 
 void Window::close() {
 	for (Object* object : inst().m_objects) {
+		delete object;
+	}
+
+	for (sf::Text* object : inst().m_texts) {
 		delete object;
 	}
 
@@ -86,11 +94,14 @@ void Window::forEachObject(void(*func)(Object*)) {
 	}
 }
 
-Text* Window::createText(const std::string& text, int x, int y, const std::string& fontFamily, int fontSize) {
-
-	Text* t = new Text(text, x, y, inst().m_fontsMap[fontFamily], fontSize);
-
+sf::Text* Window::createText(const std::string& text, float x, float y, const std::string& fontFamily, int fontSize, sf::Color color) {
+	sf::Text* t = new sf::Text;
+	t->setString(text);
+	t->setCharacterSize(fontSize);
+	t->setPosition(x, y);
+	t->setFont(inst().m_fonts[fontFamily]);
 	inst().m_texts.push_back(t);
+	
 	return t;
 }
 

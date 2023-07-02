@@ -1,8 +1,12 @@
 #include "Spacecraft.h"
 
 #include <iostream>
+#include <string>
 
 #include "../Window/Time.h"
+#include "../Window/Window.h"
+
+#include "../constants.h"
 
 Spacecraft::Spacecraft(Vector2f position, Vector2f velocity) :
 	Object("Spacecraft"), m_shape(3) {
@@ -18,11 +22,22 @@ Spacecraft::Spacecraft(Vector2f position, Vector2f velocity) :
 	m_shape.setFillColor(sf::Color::White);
 
 	m_orbit.update(m_position, m_velocity);
-	std::cout << "SMA: " << m_orbit.semiMajorAxis() << std::endl;
-	std::cout << "Periapsis: " << m_orbit.periapsis() << std::endl;
-	std::cout << "Apoapsis: " << m_orbit.apoapsis() << std::endl;
-	std::cout << "Ecc: " << m_orbit.eccentricity() << std::endl;
-	std::cout << "TA: " << m_orbit.trueAnomaly() << std::endl;
+	
+
+	// STATS
+	m_stats[0] = 
+		Window::createText("SMA: " + std::to_string(m_orbit.semiMajorAxis()), 5, 5, "Consolas", 15, sf::Color::White);
+	m_stats[1] =
+		Window::createText("Ecc: " + std::to_string(m_orbit.eccentricity()), 5, 25, "Consolas", 15, sf::Color::White);
+	m_stats[2] =
+		Window::createText("Apoapsis: " + std::to_string(m_orbit.apoapsis()), 130, 5, "Consolas", 15, sf::Color::White);
+	m_stats[3] =
+		Window::createText("Periapsis: " + std::to_string(m_orbit.periapsis()), 130, 25, "Consolas", 15, sf::Color::White);
+	m_stats[4] =
+		Window::createText("TA: " + std::to_string(m_orbit.trueAnomaly()), 300, 5, "Consolas", 15, sf::Color::White);
+	m_stats[5] =
+		Window::createText("TA: " + std::to_string(m_orbit.tilt() * consts::RDEG), 300, 25, "Consolas", 15, sf::Color::White);
+
 }
 
 void Spacecraft::update() {

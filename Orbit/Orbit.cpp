@@ -40,15 +40,15 @@ float Orbit::tilt() {
 }
 
 float Orbit::trueAnomaly() {
-	return 0.0f;
+	return m_ta;
 }
 
 float Orbit::eccentricAnomaly() {
-	return 0.0f;
+	return m_ea;
 }
 
 float Orbit::meanAnomaly() {
-	return 0.0f;
+	return m_ma;
 }
 
 float Orbit::periapsis() {

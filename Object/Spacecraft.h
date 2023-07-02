@@ -2,6 +2,8 @@
 #include "Object.h"
 #include "../Orbit/Orbit.h"
 
+#include <SFML/Graphics.hpp>
+
 class Spacecraft : public Object {
 	sf::ConvexShape m_shape;
 	Orbit m_orbit;
@@ -11,6 +13,8 @@ class Spacecraft : public Object {
 
 	const float c_angularAcceleration = 1.5f;
 	const float c_angularDecceleration = 0.99f;
+
+	sf::Text* m_stats[6];
 
 public:
 	Spacecraft(Vector2f position, Vector2f velocity);

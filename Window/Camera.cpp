@@ -35,7 +35,6 @@ void Camera::render() {
         );
         Window::inst().m_window->draw(*shape);
     }
-    Window::inst().m_window->display();
 }
 
 float Camera::getPixelsPerUnit() {

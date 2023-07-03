@@ -14,7 +14,7 @@ class Spacecraft : public Object {
 	const float c_angularAcceleration = 1.5f;
 	const float c_angularDecceleration = 0.99f;
 
-	sf::Text* m_stats[6];
+	sf::Text* m_stats[9];
 
 public:
 	Spacecraft(Vector2f position, Vector2f velocity);

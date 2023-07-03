@@ -7,8 +7,11 @@
 
 class Orbit {
 private:
+
 	// eccentricity
 	Vector3f m_ecc;
+	// specific angular momentum
+	Vector3f m_sam;
 	// semi-major axis
 	float m_sma = 0.0f;
 	
@@ -17,12 +20,30 @@ private:
 	
 	float m_ta = 0.0f, m_ea = 0.0f, m_ma = 0.0f;
 
+	float m_time = 0.0f;
+	float m_period = 0.0f;
+
 	// the body the spacecraft is orbiting
 	CelestialBody* m_body = nullptr;
+
+	static float meanFromEccentric(float ea, float ecc);
+	static float eccentricFromTrue(float ta, float ecc);
+
+	static float trueFromEccentric(float ea, float ecc);
+	static float eccentricFromMean(float ma, float eccf);
+
+	static float meanFromTrue(float ta, float ecc);
+	static float trueFromMean(float ma, float ecc);
+
 public:
 	Orbit();
 	Orbit(Vector2f position, Vector2f velocity);
 	void update(Vector2f position, Vector2f velocity);
+	
+	void progress(float dt);
+	
+	Vector2f getPosition();
+	Vector2f getVelocity();
 
 	float periapsis();
 	float apoapsis();
@@ -35,5 +56,7 @@ public:
 	float trueAnomaly();
 	float eccentricAnomaly();
 	float meanAnomaly();
+
+	float time();
 
 };

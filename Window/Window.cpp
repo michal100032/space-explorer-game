@@ -35,6 +35,9 @@ void Window::init(const std::string& title, int width, int height) {
 	inst().m_fonts.reserve(8);
 	inst().loadFont("Consolas", "res/fonts/consola.ttf");
 
+	inst().m_window->setKeyRepeatEnabled(false);
+
+	Time::init();
 }
 
 bool Window::isOpen() {
@@ -53,6 +56,15 @@ void Window::handleEvents() {
 			if (event.mouseWheelScroll.delta > 0) {
 				inst().m_camera->zoomIn();
 			} else inst().m_camera->zoomOut();
+			break;
+		case sf::Event::KeyPressed:
+			if (event.key.code == sf::Keyboard::Comma) {
+				Time::setScale(Time::scale() / 2);
+			} else if (event.key.code == sf::Keyboard::Period) {
+				Time::setScale(Time::scale() * 2);
+			} else if (event.key.code == sf::Keyboard::Slash) {
+				Time::setScale(1.0f);
+			}
 			break;
 		}
 	}
@@ -100,6 +112,8 @@ sf::Text* Window::createText(const std::string& text, float x, float y, const st
 	t->setCharacterSize(fontSize);
 	t->setPosition(x, y);
 	t->setFont(inst().m_fonts[fontFamily]);
+	t->setFillColor(color);
+
 	inst().m_texts.push_back(t);
 	
 	return t;

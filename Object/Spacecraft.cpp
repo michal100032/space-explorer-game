@@ -34,9 +34,16 @@ Spacecraft::Spacecraft(Vector2f position, Vector2f velocity) :
 	m_stats[3] =
 		Window::createText("Periapsis: " + std::to_string(m_orbit.periapsis()), 130, 25, "Consolas", 15, sf::Color::White);
 	m_stats[4] =
-		Window::createText("TA: " + std::to_string(m_orbit.trueAnomaly()), 300, 5, "Consolas", 15, sf::Color::White);
+		Window::createText("Tilt: " + std::to_string(m_orbit.tilt() * consts::RDEG), 300, 5, "Consolas", 15, sf::Color::White);
 	m_stats[5] =
-		Window::createText("TA: " + std::to_string(m_orbit.tilt() * consts::RDEG), 300, 25, "Consolas", 15, sf::Color::White);
+		Window::createText("Time: " + std::to_string(m_orbit.time()), 300, 25, "Consolas", 15, sf::Color::White);
+
+	m_stats[6] =
+		Window::createText("TA: " + std::to_string(m_orbit.trueAnomaly() * consts::RDEG), 450, 5, "Consolas", 15, sf::Color::White);
+	m_stats[7] =
+		Window::createText("EA: " + std::to_string(m_orbit.eccentricAnomaly() * consts::RDEG), 450, 25, "Consolas", 15, sf::Color::White);
+	m_stats[8] =
+		Window::createText("MA: " + std::to_string(m_orbit.meanAnomaly() * consts::RDEG), 600, 5, "Consolas", 15, sf::Color::White);
 
 }
 
@@ -50,10 +57,17 @@ void Spacecraft::update() {
 			(1.0f - c_angularDecceleration) * Time::delta();
 	}
 
-	//std::cout << "dt: " << Time::delta() << " s" << std::endl;
-	//std::cout << "m_angularSpeed: " << m_angularSpeed << std::endl;
-
 	m_rotation += m_angularSpeed * Time::delta();
+
+	m_orbit.progress(Time::delta());
+	m_position = m_orbit.getPosition();
+
+	m_stats[5]->setString("Time: " + std::to_string(m_orbit.time()));
+
+	m_stats[6]->setString("TA: " + std::to_string(m_orbit.trueAnomaly() * consts::RDEG));
+	m_stats[7]->setString("EA: " + std::to_string(m_orbit.eccentricAnomaly() * consts::RDEG));
+	m_stats[8]->setString("MA: " + std::to_string(m_orbit.meanAnomaly() * consts::RDEG));
+
 }
 
 sf::Shape* Spacecraft::getShape() {

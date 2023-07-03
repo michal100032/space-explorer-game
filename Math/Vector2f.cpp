@@ -11,15 +11,15 @@ Vector2f::Vector2f()
 Vector2f::Vector2f(float x, float y)
 	: x(x), y(y) {}
 
-float Vector2f::sqrMagnitude() {
+float Vector2f::sqrMagnitude() const {
 	return x * x + y * y;
 }
 
-float Vector2f::magnitude() {
+float Vector2f::magnitude() const {
 	return sqrtf(x * x + y * y);
 }
 
-Vector2f Vector2f::normalized() {
+Vector2f Vector2f::normalized() const {
 	float mag = magnitude();
 	return { x / mag, y / mag };
 }
@@ -75,6 +75,11 @@ float Vector2f::dot(const Vector2f& lhs, const Vector2f& rhs) {
 
 float Vector2f::distance(const Vector2f& lhs, const Vector2f& rhs) {
 	return sqrtf((lhs.x - rhs.x) * (lhs.x - rhs.x) + (lhs.y - rhs.y) * (lhs.y - rhs.y));
+}
+
+float Vector2f::angle(const Vector2f& lhs, const Vector2f& rhs) {
+	float a = lhs.x * rhs.y - lhs.y * rhs.x;
+	return (a > 0 ? 1 : -1) * acosf(dot(lhs, rhs) / lhs.magnitude() / rhs.magnitude());
 }
 
 std::ostream& operator<<(std::ostream& os, const Vector2f& vec) {

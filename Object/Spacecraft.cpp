@@ -23,6 +23,8 @@ Spacecraft::Spacecraft(Vector2f position, Vector2f velocity) :
 
 	m_orbit.update(m_position, m_velocity);
 	
+	m_orbRenderer = Window::createObject<OrbitRenderer>();
+	m_orbRenderer->setOrbit(&m_orbit);
 
 	// STATS
 	m_stats[0] = 
@@ -48,18 +50,29 @@ Spacecraft::Spacecraft(Vector2f position, Vector2f velocity) :
 }
 
 void Spacecraft::update() {
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		m_angularSpeed += c_angularAcceleration * Time::delta();
-	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		m_angularSpeed -= c_angularAcceleration * Time::delta();
+	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		m_angularSpeed += c_angularAcceleration * Time::delta();
 	} else {
 		m_angularSpeed += -m_angularSpeed *
 			(1.0f - c_angularDecceleration) * Time::delta();
 	}
 
 	m_rotation += m_angularSpeed * Time::delta();
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+		Vector2f acc = {
+			Time::delta() * c_acceleration * cosf(1.5f * consts::PI - m_rotation),
+			Time::delta() * c_acceleration * sinf(1.5f * consts::PI - m_rotation)
+		};
+		m_orbit.accelerate(acc);
+		m_orbRenderer->refresh();
+	}
 
 	m_orbit.progress(Time::delta());
+
 	m_position = m_orbit.getPosition();
 
 	m_stats[5]->setString("Time: " + std::to_string(m_orbit.time()));

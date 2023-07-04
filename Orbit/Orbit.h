@@ -37,9 +37,10 @@ private:
 
 public:
 	Orbit();
-	Orbit(Vector2f position, Vector2f velocity);
-	void update(Vector2f position, Vector2f velocity);
-	
+	Orbit(const Vector2f& position, const Vector2f& velocity);
+	void update(const Vector2f& position, const Vector2f& velocity);
+	void accelerate(const Vector2f& acc);
+
 	void progress(float dt);
 	
 	Vector2f getPosition();

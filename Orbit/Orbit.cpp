@@ -7,7 +7,7 @@
 Orbit::Orbit()
 	: m_body(nullptr), m_ecc(), m_sma(0.0f), m_tilt(0.0f) {}
 
-Orbit::Orbit(Vector2f position, Vector2f velocity) {
+Orbit::Orbit(const Vector2f& position, const Vector2f& velocity) {
 	update(position, velocity);
 }
 
@@ -45,7 +45,7 @@ float Orbit::trueFromMean(float ma, float ecc) {
 	return trueFromEccentric(eccentric, ecc);
 }
 
-void Orbit::update(Vector2f position, Vector2f velocity) {
+void Orbit::update(const Vector2f& position, const Vector2f& velocity) {
 	m_body = CelestialBody::whoseSoi(position);
 
 	m_sam = Vector3f::cross(position, velocity);
@@ -54,8 +54,6 @@ void Orbit::update(Vector2f position, Vector2f velocity) {
 
 	m_sma = 1.0f / (2.0f / position.magnitude() - velocity.sqrMagnitude() / m_body->gp());
 
-	// m_ta = consts::DPI - atan2f(position.y, position.x) + m_tilt;
-
 	m_ta = Vector2f::angle(position, m_ecc.sf2());
 	if (m_ta > consts::PI) {
 		m_ta -= consts::PI;
@@ -63,10 +61,12 @@ void Orbit::update(Vector2f position, Vector2f velocity) {
 	
 	m_period = consts::DPI * sqrtf(m_sma * m_sma * m_sma / m_body->gp());
 	m_ma = meanFromTrue(m_ta, m_ecc.magnitude());
-	std::cout << m_ma * consts::RDEG << std::endl;
 	m_time = m_ma / consts::DPI * m_period;
+}
 
-	std::cout << trueFromMean(m_ma, m_ecc.magnitude()) * consts::RDEG << std::endl;
+void Orbit::accelerate(const Vector2f& acc) {
+	Vector2f vel = getVelocity() + acc;
+	update(getPosition(), vel);
 }
 
 void Orbit::progress(float dt) {
@@ -85,7 +85,7 @@ void Orbit::progress(float dt) {
 }
 
 Vector2f Orbit::getPosition() {
-	float r = m_sam.sqrMagnitude() / m_body->gp() / (1 + m_ecc.magnitude() * cosf(m_ta));
+	float r = m_sam.sqrMagnitude() / m_body->gp() / (1.0f + m_ecc.magnitude() * cosf(m_ta));
 	float ang = consts::DPI - m_ta + m_tilt;
 	return Vector2f(
 		r * cosf(ang),
@@ -93,9 +93,19 @@ Vector2f Orbit::getPosition() {
 	) + m_body->getPosition();
 }
 
-Vector2f Orbit::getVelocity()
-{
-	return Vector2f();
+Vector2f Orbit::getVelocity() {
+	float r = m_sam.sqrMagnitude() / m_body->gp() / (1.0f + m_ecc.magnitude() * cosf(m_ta));
+	float speed = sqrtf(m_body->gp() * (2.0f / r - 1.0f / m_sma));
+
+	float sinVr = m_sam.magnitude() / speed / r;
+	float vr = asinf(sinVr);
+
+	float angle = (m_ta > 0 ? vr : (consts::PI - vr)) - m_tilt + m_ta + consts::PI / 2;
+
+	return Vector2f(
+		speed * sinf(angle),
+		speed * cosf(angle)
+	);
 }
 
 Vector3f Orbit::eccVec() {

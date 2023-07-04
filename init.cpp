@@ -23,10 +23,12 @@ void init::celestialBodies() {
 void init::spacecraft() {
     Spacecraft* craft =
         Window::createObject<Spacecraft>(
-            Vector2f(30.0f, 0.0f),
-            Vector2f(0.00f, -0.05f)
+            Vector2f(-10.0f, 15.0f),
+            Vector2f(0.05f, 0.03f)
         );
+    /*
     OrbitRenderer* renderer =
         Window::createObject<OrbitRenderer>();
     renderer->setOrbit(craft->getOrbit());
+    */
 }

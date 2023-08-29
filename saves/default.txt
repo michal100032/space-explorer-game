@@ -1,0 +1,19 @@
+:Celestial Bodies
+
+Planet
+20.0 10.0
+16711935
+ROOT
+0.0 0.0
+
+Moon
+1.0 1.5
+4294967295
+Planet 
+60.0 0.0
+
+:Spacecraft
+
+Spacecraft1
+Planet
+21.9775 0.219879 0.275396 0.644977 -1.67034
